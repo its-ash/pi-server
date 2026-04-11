@@ -1,0 +1,25 @@
+:root {
+  --background: #c0c0c0;
+  --foreground: #000000;
+  --muted: #808080;
+  --accent: #0000ff;
+  --secondary: #ff0000;
+  --tertiary: #ffff00;
+  --success: #00ff00;
+  --success-dark: #00aa00;
+  --border: #000000;
+  --border-light: #ffffff;
+  --border-dark: #808080;
+  --title-bar: #000080;
+  --title-bar-end: #1084d0;
+  --panel-yellow: #ffffcc;
+  --visited-link: #800080;
+  --hover-link: #ff0000;
+  --row-alt: #e8e8e8;
+  --bevel-outset-border: var(--border-light) var(--border-dark) var(--border-dark)
+    var(--border-light);
+  --bevel-inset-border: var(--border-dark) var(--border-light) var(--border-light)
+    var(--border-dark);
+  --bevel-outset-shadow: inset -1px -1px 0 #404040, inset 1px 1px 0 #dfdfdf;
+  --bevel-inset-shadow: inset 1px 1px 0 #404040, inset -1px -1px 0 #dfdfdf;
+}
