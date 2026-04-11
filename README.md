@@ -1,5 +1,7 @@
 # PI Server
 
+![App Screenshot](./app.png)
+
 Rust + Axum backend, React frontend, and Nginx reverse proxy.
 
 ## Features
