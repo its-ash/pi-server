@@ -49,23 +49,19 @@ export async function fetchSystemStats() {
 }
 
 export function mediaUrl(path) {
-  return `/api/media?path=${encodeURIComponent(path)}`;
+  return `/api/play?path=${encodeURIComponent(path)}`;
 }
 
-export async function downloadFile(path) {
-  const response = await api.get('/download', {
-    params: { path },
-    responseType: 'blob'
-  });
+export function downloadUrl(path) {
+  return `/api/download?path=${encodeURIComponent(path)}`;
+}
 
+export function downloadFile(path) {
   const fileName = path.split('/').pop() || 'file';
-  const blob = new Blob([response.data]);
-  const href = URL.createObjectURL(blob);
   const link = document.createElement('a');
-  link.href = href;
+  link.href = downloadUrl(path);
   link.download = fileName;
   document.body.appendChild(link);
   link.click();
   link.remove();
-  URL.revokeObjectURL(href);
 }

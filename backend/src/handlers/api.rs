@@ -62,8 +62,8 @@ pub async fn list_apis() -> Json<ApiListResponse> {
             },
             ApiDescriptor {
                 method: "GET",
-                path: "/api/media?path=<file>",
-                description: "Stream media inline from ftp/",
+                path: "/api/play?path=<file>",
+                description: "Play/stream media inline from ftp/",
                 payload: None,
                 response_example: json!({
                     "status": "binary_stream",

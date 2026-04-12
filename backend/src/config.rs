@@ -11,11 +11,13 @@ impl AppConfig {
         let project_root = detect_project_root();
 
         let upload_dir = std::env::var("UPLOAD_DIR")
-            .map(PathBuf::from)
-            .unwrap_or_else(|_| project_root.join("files"));
+            .map(|path| project_root.join(path))
+            .unwrap_or_else(|_| project_root.join("../files"));
+
+
         let ftp_dir = std::env::var("FTP_DIR")
-            .map(PathBuf::from)
-            .unwrap_or_else(|_| project_root.join("ftp"));
+            .map(|path| project_root.join(path))
+            .unwrap_or_else(|_| project_root.join("../ftp"));
 
         Self {
             upload_dir,

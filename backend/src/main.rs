@@ -40,6 +40,7 @@ async fn main() {
         .route("/upload", post(handlers::upload::upload_file))
         .route("/files", get(handlers::files::list_files))
         .route("/download", get(handlers::download::download_file))
+        .route("/play", get(handlers::download::media_file))
         .route("/media", get(handlers::download::media_file))
         .route("/system", get(handlers::system::system_stats))
         .route("/apis", get(handlers::api::list_apis))

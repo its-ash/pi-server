@@ -22,16 +22,17 @@ Rust + Axum backend, React frontend, and Nginx reverse proxy.
 - `files/` uploaded files
 - `ftp/` browsable explorer files
 
-## Run With Docker
+## Run Locally
 
 ```bash
-docker compose up --build
+make install
+make dev
 ```
 
 Then open:
 
-- App: `http://localhost/`
-- API via Nginx: `http://localhost/api/...`
+- App: `http://localhost:5173/`
+- API (direct): `http://localhost:8080/`
 
 ## Local Development
 
@@ -70,3 +71,12 @@ npm run dev
 - Nginx routes:
   - `/api` -> Rust backend
   - `/` -> React app
+
+## Make Targets
+
+- `make install` install backend/frontend dependencies
+- `make dev` run backend + frontend together
+- `make backend` run backend only
+- `make frontend` run frontend only
+- `make build` build backend and frontend
+- `make clean` clean build outputs
