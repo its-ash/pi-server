@@ -25,6 +25,7 @@ body {
     linear-gradient(-45deg, transparent 75%, #b8b8b8 75%);
   background-size: 4px 4px;
   background-position: 0 0, 0 2px, 2px -2px, -2px 0;
+  font-size: 13px;
 }
 
 a {
@@ -53,8 +54,8 @@ input:focus-visible {
 }
 
 .app-shell {
-  width: min(1024px, calc(100% - 16px));
-  margin: 8px auto;
+  width: calc(100% - 10px);
+  margin: 5px;
   border: 2px solid;
   border-color: var(--bevel-outset-border);
   box-shadow: var(--bevel-outset-shadow);
@@ -64,8 +65,8 @@ input:focus-visible {
 .main-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: 12px;
-  padding: 12px;
+  gap: 8px;
+  padding: 8px;
 }
 
 @media (max-width: 640px) {
@@ -75,6 +76,7 @@ input:focus-visible {
   }
 
   .main-grid {
-    padding: 8px;
+    padding: 6px;
+    gap: 6px;
   }
 }
