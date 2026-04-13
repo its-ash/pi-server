@@ -9,6 +9,8 @@ import WindowFrame from './components/ui/WindowFrame';
 import GrooveRule from './components/ui/GrooveRule';
 import { fetchSystemStats } from './lib/api';
 
+const OFFLINE_MESSAGE = 'Pi is offline or Electricity issue';
+
 const TABS = [
   { key: 'send', label: '1. Send File' },
   { key: 'browse', label: '2. Browse Files' },
@@ -25,6 +27,7 @@ export default function App() {
   const [active, setActive] = useState('send');
   const [system, setSystem] = useState(null);
   const [systemError, setSystemError] = useState('');
+  const [showOfflineDialog, setShowOfflineDialog] = useState(false);
 
   const panel = useMemo(() => {
     if (active === 'send') {
@@ -50,14 +53,14 @@ export default function App() {
 
         setSystem(data);
         setSystemError('');
+        setShowOfflineDialog(false);
       } catch (error) {
         if (!mounted) {
           return;
         }
 
-        const message =
-          error?.response?.data?.error || error?.message || 'Failed to load system stats.';
-        setSystemError(message);
+        setSystemError(OFFLINE_MESSAGE);
+        setShowOfflineDialog(true);
       }
     }
 
@@ -72,6 +75,24 @@ export default function App() {
 
   return (
     <div className="app-shell">
+      {showOfflineDialog ? (
+        <div className="offline-dialog-overlay" role="presentation">
+          <dialog className="offline-dialog" open aria-labelledby="offline-dialog-title">
+            <h2 id="offline-dialog-title">System Alert</h2>
+            <p>{OFFLINE_MESSAGE}</p>
+            <div className="offline-dialog-actions">
+              <button
+                type="button"
+                className="btn-95 red"
+                onClick={() => setShowOfflineDialog(false)}
+              >
+                Close
+              </button>
+            </div>
+          </dialog>
+        </div>
+      ) : null}
+
       <WindowFrame title="PI SERVER TERMINAL" badge="NEW!" contentClassName="header-wrap">
         <h1 className="hero-title rainbow-text">Ash Home</h1>
         <div className="hit-counter" aria-label="Visitor counter">
