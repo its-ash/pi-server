@@ -56,6 +56,15 @@ export function downloadUrl(path) {
   return `/api/download?path=${encodeURIComponent(path)}`;
 }
 
+export function appDownloadUrl(filename) {
+  return `/api/apps/download?filename=${encodeURIComponent(filename)}`;
+}
+
+export async function fetchApks() {
+  const { data } = await api.get('/apps');
+  return data;
+}
+
 export function downloadFile(path) {
   const fileName = path.split('/').pop() || 'file';
   const link = document.createElement('a');

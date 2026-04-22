@@ -4,6 +4,7 @@ use std::path::{Path, PathBuf};
 pub struct AppConfig {
     pub upload_dir: PathBuf,
     pub ftp_dir: PathBuf,
+    pub apps_dir: PathBuf,
 }
 
 impl AppConfig {
@@ -19,9 +20,14 @@ impl AppConfig {
             .map(|path| project_root.join(path))
             .unwrap_or_else(|_| project_root.join("../ftp"));
 
+        let apps_dir = std::env::var("APPS_DIR")
+            .map(|path| project_root.join(path))
+            .unwrap_or_else(|_| project_root.join("../apps"));
+
         Self {
             upload_dir,
             ftp_dir,
+            apps_dir,
         }
     }
 }

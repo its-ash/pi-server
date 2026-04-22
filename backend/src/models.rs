@@ -2,10 +2,40 @@ use serde::Serialize;
 use serde_json::Value;
 
 #[derive(Debug, Serialize)]
+pub struct ApkMeta {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub app_name: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub app_icon_b64: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub app_icon_mime: Option<String>,
+}
+
+#[derive(Debug, Serialize)]
+pub struct ApkEntry {
+    pub filename: String,
+    pub size: u64,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub app_name: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub app_icon_b64: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub app_icon_mime: Option<String>,
+}
+
+#[derive(Debug, Serialize)]
+pub struct ApksResponse {
+    pub status: &'static str,
+    pub apps: Vec<ApkEntry>,
+}
+
+#[derive(Debug, Serialize)]
 pub struct UploadResponse {
     pub status: &'static str,
     pub filename: String,
     pub size: u64,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub apk_meta: Option<ApkMeta>,
 }
 
 #[derive(Debug, Serialize)]
@@ -61,6 +91,7 @@ pub struct SystemStatsResponse {
     pub used_memory_kib: u64,
     pub total_memory_kib: u64,
     pub ram_usage_percent: f64,
+    pub cpu_usage_percent: f64,
 }
 
 #[derive(Debug, Serialize)]

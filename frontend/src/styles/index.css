@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+@theme {
+  --font-family-sans: "Segoe UI Variable", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --color-accent: #0078d4;
+  --color-accent-hover: #106ebe;
+  --color-accent-active: #005a9e;
+  --color-accent-light: #eff6fc;
+  --color-fluent-text: #1a1a1a;
+  --color-fluent-muted: #605e5c;
+  --color-fluent-success: #107c10;
+  --color-fluent-error: #c42b1c;
+}
+
+::selection {
+  background-color: #0078d4;
+  color: #ffffff;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+}

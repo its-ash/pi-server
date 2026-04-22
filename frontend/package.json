@@ -15,7 +15,9 @@
     "react-fast-marquee": "^1.6.5"
   },
   "devDependencies": {
+    "@tailwindcss/vite": "^4.2.4",
     "@vitejs/plugin-react": "^4.3.4",
+    "tailwindcss": "^4.2.4",
     "vite": "^6.0.5"
   }
 }

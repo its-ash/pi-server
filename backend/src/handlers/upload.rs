@@ -101,13 +101,30 @@ pub async fn upload_file(
     let final_path = state.config.upload_dir.join(&final_name);
 
     if let Some(tmp) = temp_path {
-        tokio::fs::rename(tmp, final_path).await?;
+        tokio::fs::rename(&tmp, &final_path).await?;
     }
+
+    let apk_meta = if final_name.to_lowercase().ends_with(".apk") {
+        let path = final_path.clone();
+        tokio::task::spawn_blocking(move || {
+            crate::apk_meta::extract(&path).map(|m| crate::models::ApkMeta {
+                app_name: m.app_name,
+                app_icon_b64: m.app_icon_b64,
+                app_icon_mime: m.app_icon_mime,
+            })
+        })
+        .await
+        .ok()
+        .flatten()
+    } else {
+        None
+    };
 
     Ok(Json(UploadResponse {
         status: "success",
         filename: final_name,
         size: total_size,
+        apk_meta,
     }))
 }
 

@@ -1,3 +1,4 @@
+mod apk_meta;
 mod config;
 mod errors;
 mod handlers;
@@ -33,6 +34,9 @@ async fn main() {
     tokio::fs::create_dir_all(&config.ftp_dir)
         .await
         .expect("failed to create ftp dir");
+    tokio::fs::create_dir_all(&config.apps_dir)
+        .await
+        .expect("failed to create apps dir");
 
     let app_state = AppState { config };
 
@@ -44,6 +48,8 @@ async fn main() {
         .route("/media", get(handlers::download::media_file))
         .route("/system", get(handlers::system::system_stats))
         .route("/apis", get(handlers::api::list_apis))
+        .route("/apps", get(handlers::apps::list_apps))
+        .route("/apps/download", get(handlers::apps::download_app))
         .layer(DefaultBodyLimit::disable())
         .fallback(not_found)
         .with_state(app_state);
