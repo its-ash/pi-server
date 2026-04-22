@@ -106,10 +106,7 @@ pub fn normalize_relative_path(input: &str) -> Result<PathBuf, AppError> {
             return Err(AppError::bad_request("invalid path"));
         }
 
-        if !part
-            .chars()
-            .all(|ch| ch.is_ascii_alphanumeric() || matches!(ch, '.' | '-' | '_' | ' ' | '(' | ')'))
-        {
+        if !is_safe_path_component(part) {
             return Err(AppError::bad_request("invalid path"));
         }
 
@@ -117,6 +114,14 @@ pub fn normalize_relative_path(input: &str) -> Result<PathBuf, AppError> {
     }
 
     Ok(normalized)
+}
+
+/// Allows any character that cannot be used to escape the directory:
+/// no NUL bytes, no path separators (/ \), no control characters.
+fn is_safe_path_component(s: &str) -> bool {
+    !s.is_empty()
+        && s.chars()
+            .all(|ch| ch != '\0' && ch != '/' && ch != '\\' && !ch.is_control())
 }
 
 pub fn pathbuf_to_string(path: &std::path::Path) -> String {

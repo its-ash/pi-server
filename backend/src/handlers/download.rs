@@ -63,7 +63,18 @@ async fn stream_from_ftp(
     let safe_rel = normalize_relative_path(relative_path)?;
     let file_path = state.config.ftp_dir.join(&safe_rel);
 
-    let metadata = tokio::fs::metadata(&file_path)
+    // Canonicalize to resolve any symlinks and ensure the path is within ftp_dir.
+    let canonical = tokio::fs::canonicalize(&file_path)
+        .await
+        .map_err(|_| AppError::not_found("file not found"))?;
+    let canonical_root = tokio::fs::canonicalize(&state.config.ftp_dir)
+        .await
+        .map_err(|_| AppError::internal("ftp dir unavailable"))?;
+    if !canonical.starts_with(&canonical_root) {
+        return Err(AppError::bad_request("invalid path"));
+    }
+
+    let metadata = tokio::fs::metadata(&canonical)
         .await
         .map_err(|_| AppError::not_found("file not found"))?;
 
@@ -78,7 +89,7 @@ async fn stream_from_ftp(
         None
     };
 
-    let mut file = tokio::fs::File::open(&file_path).await?;
+    let mut file = tokio::fs::File::open(&canonical).await?;
 
     let (status, content_length, content_range, body) = if let Some(range) = parsed_range {
         file.seek(SeekFrom::Start(range.start)).await?;
@@ -95,7 +106,7 @@ async fn stream_from_ftp(
         (StatusCode::OK, file_size, None, Body::from_stream(stream))
     };
 
-    let mime = mime_guess::from_path(&file_path).first_or_octet_stream();
+    let mime = mime_guess::from_path(&canonical).first_or_octet_stream();
     let content_type = HeaderValue::from_str(mime.as_ref())
         .map_err(|_| AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "invalid content type"))?;
 
